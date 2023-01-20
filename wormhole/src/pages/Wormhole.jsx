@@ -1,30 +1,68 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import BackgroundImage from '../assets/backdrop1.jpg';
 import MovieLogo from '../assets/avatar-logo.png'
 import { FaPlay } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux'
+import { fetchMovies, getGenres } from '../store';
+import { apiKey, tmdbUrl } from '../utils/constants';
+import axios from 'axios';
 
 
 export default function Wormhole() {
   const [isScrolled,setIsScrolled] = useState(false);
+  const movies = useSelector((state) => state.wormhole.movies);
+  const genres = useSelector((state) => state.wormhole.genres);
+  const genresLoaded = useSelector((state) => state.wormhole.genresLoaded);
+
+
+  const [movie, setMovie] = useState([]);
+
 
    window.onscroll= ()=>{
     setIsScrolled(window.pageYOffset=== 0? false: true)
     return ()=> (window.onscroll=null)
   }
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getGenres());
+  }, []);
+
+  useEffect(() => {
+    if (genresLoaded) {
+      dispatch(fetchMovies({ genres, type: "all" }));
+    }
+  }, [genresLoaded]);
+
+  useEffect(() => {
+    async function fetchData(){
+        const request = await axios.get(`${tmdbUrl}/discover/tv?api_key=${apiKey}&with_networks=213`)
+
+        setMovie(request.data.results[
+            Math.floor(Math.random() * request.data.results.length)
+        ])
+        return request;
+    }
+    fetchData();
+},[])
+console.log(movies)
   return (
     <Container>
       <Navbar isScrolled={isScrolled}/>
       <div className="hero">
-        <img src={BackgroundImage} alt="avatar" className='background-image'/>
+        <img src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`} alt="avatar" className='background-image'/>
         <div className="container">
           <div className="logo">
-            <img src={MovieLogo} alt="logo" />
+            <h1> {movie?.title || movie.name || movie?.orignal_name}</h1>
+            <p>{movie?.overview}</p>
           </div>
           <div className="buttons flex">
-            <button className="flex j-center a-center">
+            <button className="flex j-center a-center" onClick={()=>navigate('/player')}>
               <FaPlay/> Play 
             </button>
             <button className="flex j-center a-center">
@@ -53,11 +91,17 @@ background-color: black;
     position: absolute;
     bottom: 5rem;
     .logo{
-      img{
+      h1{
         width: 100%;
         height: 100%;
         margin-left: 5rem;
          
+      }
+      p{
+        width:50%;
+        margin-left: 5rem;
+        font-size: 1.2rem;
+        color:#f3f3f3;
       }
     }
     .buttons{
