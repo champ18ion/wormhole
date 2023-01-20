@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-import BackgroundImage from '../assets/backdrop1.jpg';
-import MovieLogo from '../assets/avatar-logo.png'
 import { FaPlay } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -10,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { fetchMovies, getGenres } from '../store';
 import { apiKey, tmdbUrl } from '../utils/constants';
 import axios from 'axios';
+import Slider from '../components/Slider';
 
 
 export default function Wormhole() {
@@ -41,7 +40,7 @@ export default function Wormhole() {
 
   useEffect(() => {
     async function fetchData(){
-        const request = await axios.get(`${tmdbUrl}/discover/tv?api_key=${apiKey}&with_networks=213`)
+        const request = await axios.get(`${tmdbUrl}/trending/all/week?api_key=${apiKey}&with_networks=213`)
 
         setMovie(request.data.results[
             Math.floor(Math.random() * request.data.results.length)
@@ -50,7 +49,7 @@ export default function Wormhole() {
     }
     fetchData();
 },[])
-console.log(movies)
+
   return (
     <Container>
       <Navbar isScrolled={isScrolled}/>
@@ -71,6 +70,7 @@ console.log(movies)
           </div>
         </div>
       </div>
+      <Slider movies={movies}/>
     </Container>
   )
 }
