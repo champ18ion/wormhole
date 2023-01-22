@@ -49,6 +49,19 @@ export const getGenres = createAsyncThunk("wormhole/genres", async()=>{
      return genres;
 })  
 
+export const fetchDataByGenre = createAsyncThunk(
+  "wormhole/genre",
+  async ({ genre, type }, thunkAPI) => {
+    const {
+      wormhole: { genres },
+    } = thunkAPI.getState();
+    return getRawData(
+      `${tmdbUrl}/discover/${type}?api_key=${apiKey}&with_genres=${genre}`,
+      genres
+    );
+  }
+);
+
 export const fetchMovies = createAsyncThunk(
   "wormhole/trending",
   async ({ type }, thunkAPI) => {
@@ -74,6 +87,10 @@ const wormholeSlice = createSlice({
       state.movies = action.payload;
       
   })
+  builder.addCase(fetchDataByGenre.fulfilled,(state,action)=>{
+    state.movies = action.payload;
+    
+})
   
   },
   });

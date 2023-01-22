@@ -8,12 +8,12 @@ export default function CardSlider({ data, title }) {
   const [showControls, setShowControls] = useState(false);
   const handleDirection = (direction) => {
     let distance = listRef.current.getBoundingClientRect().x - 70;
-    if (direction === "left" && sliderPosition > 0) {
-      listRef.current.style.transform = `translateX(${230 + distance}px)`;
+    if (direction === "left" && sliderPosition >= 0) {
+      listRef.current.style.transform = `translateX(${220 + distance}px)`;
       setSliderPosition(sliderPosition - 1);
     }
-    if (direction === "right" && sliderPosition < 4) {
-      listRef.current.style.transform = `translateX(${-230 + distance}px)`;
+    if (direction === "right" && sliderPosition <= 5) {
+      listRef.current.style.transform = `translateX(${-200 + distance}px)`;
       setSliderPosition(sliderPosition + 1);
     }
   };
