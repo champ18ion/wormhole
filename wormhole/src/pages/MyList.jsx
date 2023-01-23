@@ -37,7 +37,7 @@ export default function MyList() {
       <Navbar isScrolled={isScrolled} />
       <div className="content flex column">
         <h1>My Wormhole</h1>
-        <div className="grid flex">
+        { movies.length ? <div className="grid flex">
           {movies.map((movie, index) => {
             return (
               <Card
@@ -48,8 +48,8 @@ export default function MyList() {
               />
             );
           })}
-        </div>
-      </div>
+        </div> : <h1> your wormhole is void </h1> }
+      </div> 
     </Container>
   );
 }
