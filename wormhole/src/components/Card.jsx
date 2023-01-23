@@ -10,7 +10,7 @@ import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
 import { useDispatch } from "react-redux";
-// import { removeMovieFromLiked } from "../store";
+import { removeFromLikedMovies } from "../store";
 import video from "../assets/tekken-8-state-of-play-sep-2022-announcement-trailer-ps5-games-ytsave.pk.mp4";
 
 export default React.memo(function Card({ index, movieData, isLiked = false }) {
@@ -80,7 +80,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                     title="Remove from List"
                     onClick={() =>
                       dispatch(
-                        // removeMovieFromLiked({ movieId: movieData.id, email })
+                        removeFromLikedMovies({ movieId: movieData.id, email })
                       )
                     }
                   />

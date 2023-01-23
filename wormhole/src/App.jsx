@@ -6,6 +6,7 @@ import Wormhole from './pages/Wormhole'
 import Player from './pages/Player'
 import Movies from './pages/Movies'
 import TvShows from './pages/TvShows'
+import MyList from './pages/MyList'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Route exact path='/player' element={<Player/>}/>
       <Route exact path='/movies' element={<Movies/>}/>
       <Route exact path='/tv' element={<TvShows/>}/>
+      <Route exact path='/myList' element={<MyList/>}/>
       <Route exact path='/' element={<Wormhole/>} />
     </Routes>
     </BrowserRouter>

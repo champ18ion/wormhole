@@ -62,6 +62,21 @@ export const fetchDataByGenre = createAsyncThunk(
   }
 );
 
+export const getUsersLikedMovies = createAsyncThunk("wormhole/getliked",async(email)=>{
+  const {data:{movies}} = await axios.get(`http://localhost:5000/api/user/liked/${email}`)
+  return movies;
+}
+)
+
+export const removeFromLikedMovies = createAsyncThunk("wormhole/delete",async({email,movieId})=>{
+  const {data:{movies}} = await axios.put(`http://localhost:5000/api/user/delete`,{
+    email,
+    movieId
+  })
+  return movies;
+}
+)
+
 export const fetchMovies = createAsyncThunk(
   "wormhole/trending",
   async ({ type }, thunkAPI) => {
@@ -91,6 +106,16 @@ const wormholeSlice = createSlice({
     state.movies = action.payload;
     
 })
+  builder.addCase(getUsersLikedMovies.fulfilled,(state,action)=>{
+  state.movies = action.payload;
+  
+})
+
+builder.addCase(removeFromLikedMovies.fulfilled,(state,action)=>{
+  state.movies = action.payload;
+  
+})
+  
   
   },
   });
