@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { FaPlay } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -52,6 +54,7 @@ export default function Wormhole() {
 
   return (
     <Container>
+      <ToastContainer/>
       <Navbar isScrolled={isScrolled}/>
       <div className="hero">
         <img src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`} alt="avatar" className='background-image'/>

@@ -1,5 +1,7 @@
 import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../utils/firebase-config";
@@ -34,6 +36,7 @@ export default function MyList() {
 
   return (
     <Container>
+      <ToastContainer />
       <Navbar isScrolled={isScrolled} />
       <div className="content flex column">
         <h1>My Wormhole</h1>

@@ -12,6 +12,7 @@ import { firebaseAuth } from "../utils/firebase-config";
 import { useDispatch } from "react-redux";
 import { removeFromLikedMovies } from "../store";
 import video from "../assets/tekken-8-state-of-play-sep-2022-announcement-trailer-ps5-games-ytsave.pk.mp4";
+import { toast } from "react-toastify";
 
 export default React.memo(function Card({ index, movieData, isLiked = false }) {
   const navigate = useNavigate();
@@ -78,14 +79,26 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                 {isLiked ? (
                   <BsCheck
                     title="Remove from List"
-                    onClick={() =>
+                    onClick={() =>{
                       dispatch(
                         removeFromLikedMovies({ movieId: movieData.id, email })
-                      )
+                      );
+                      toast.success("Movie removed from list!", {
+                        position: toast.POSITION.TOP_RIGHT,
+                        autoClose: 300
+                    });
+
+                    }
                     }
                   />
                 ) : (
-                  <AiOutlinePlus title="Add to my list" onClick={addToList} />
+                  <AiOutlinePlus title="Add to my list" onClick={()=>{
+                     addToList();
+                     toast.success("Movie added to list!", {
+                     position: toast.POSITION.TOP_RIGHT,
+                     autoClose: 500
+                  });
+                  }} />
                 )}
               </div>
               <div className="info">

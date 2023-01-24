@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -35,6 +37,7 @@ export default function TvShows() {
   return (
   
   <Conatiner>
+    <ToastContainer/>
     <div className="navbar">
       <Navbar isScrolled={isScrolled}/>
     </div>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
@@ -35,6 +37,7 @@ export default function Movies() {
   return (
   
   <Conatiner>
+    <ToastContainer/>
     <div className="navbar">
       <Navbar isScrolled={isScrolled}/>
     </div>

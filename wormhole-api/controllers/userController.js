@@ -42,26 +42,33 @@ module.exports.addToLikedMovies = async (req, res) => {
 
   module.exports.removeFromLikedMovies = async (req, res) => {
     try {
+      // Check if required parameters are present in the request body
+      if (!req.body.email || !req.body.movieId) {
+        return res.status(400).json({ msg: "Missing required parameters." });
+      }
       const { email, movieId } = req.body;
       const user = await User.findOne({ email });
-      if (user) {
-        const movies = user.likedMovies;
-        const movieIndex = movies.findIndex(({ id }) => id === movieId);
-        if (!movieIndex) {
-          res.status(400).send({ msg: "Movie not found." });
-        }
-        movies.splice(movieIndex, 1);
-        await User.findByIdAndUpdate(
-          user._id,
-          {
-            likedMovies:movies,
-          },
-          { new: true }
-        );
-        return res.json({ msg: "Movie successfully removed.", movies });
-      } else {
-        return res.json({ msg: "User with given email not found." });}
+      // Check if a user is found
+      if (!user) {
+        return res.status(404).json({ msg: "User with given email not found." });
+      }
+      const movies = user.likedMovies;
+      const movieIndex = movies.findIndex(({ id }) => id === movieId);
+      // Check if movie is found in likedMovies array
+      if (movieIndex === -1) {
+        return res.status(404).json({ msg: "Movie not found." });
+      }
+      movies.splice(movieIndex, 1);
+      await User.findByIdAndUpdate(
+        user._id,
+        {
+          likedMovies:movies,
+        },
+        { new: true }
+      );
+      return res.json({ msg: "Movie successfully removed.", movies });
     } catch (error) {
-      return res.send(error);
+      console.error(error);
+      return res.status(500).json({ msg: "Error removing movie." });
     }
   };
