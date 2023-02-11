@@ -44,7 +44,7 @@ export default function Navbar({isScrolled}) {
             </div>
             <div className="right flex a-center">
                 <div className={`search ${showSearch?'show-search':''}`}>
-                 <button onFocus={()=>setShowSearch(true)} onBlur={()=>{
+                 <button onFocus={()=>navigate('/search')} onBlur={()=>{
                     if(!inputHover) setShowSearch(false)
                  }}>
                     <FaSearch/>
