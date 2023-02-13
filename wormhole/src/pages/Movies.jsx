@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import NotAvailable from '../components/NotAvailable';
@@ -21,17 +21,19 @@ export default function Movies() {
     setIsScrolled(window.pageYOffset=== 0? false: true)
     return ()=> (window.onscroll=null)
   }
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getGenres());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (genresLoaded) {
       dispatch(fetchMovies({type: "movie" }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [genresLoaded]);
   
   return (
