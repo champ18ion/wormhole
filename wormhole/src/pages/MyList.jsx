@@ -1,4 +1,3 @@
-import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,7 +26,7 @@ export default function MyList() {
     if (email) {
       dispatch(getUsersLikedMovies(email));
     }
-  }, [email]);
+  }, [email,dispatch]);
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
