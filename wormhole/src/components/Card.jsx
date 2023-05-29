@@ -6,11 +6,10 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { RiThumbUpFill, RiThumbDownFill } from "react-icons/ri";
 import { BiChevronDown } from "react-icons/bi";
 import { BsCheck } from "react-icons/bs";
-import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
 import { useDispatch } from "react-redux";
-import { removeFromLikedMovies } from "../store";
+import { addToLikedMovies, removeFromLikedMovies } from "../store";
 import video from "../assets/tekken-8-state-of-play-sep-2022-announcement-trailer-ps5-games-ytsave.pk.mp4";
 import { toast } from "react-toastify";
 
@@ -28,10 +27,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
 
   const addToList = async () => {
     try {
-      await axios.post("http://localhost:5000/api/user/add", {
-        email,
-        data: movieData,
-      });
+      dispatch(addToLikedMovies({ email, data: movieData }));
     } catch (error) {
       console.log(error);
     }

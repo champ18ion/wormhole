@@ -5,6 +5,8 @@ import {
   } from "@reduxjs/toolkit";
 import { apiKey, tmdbUrl } from "../utils/constants";
 import axios from 'axios';
+import { collection, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { firestore } from '../utils/firebase-config';
 
   const initialState = {
     movies: [],
@@ -62,20 +64,92 @@ export const fetchDataByGenre = createAsyncThunk(
   }
 );
 
-export const getUsersLikedMovies = createAsyncThunk("wormhole/getliked",async(email)=>{
-  const {data:{movies}} = await axios.get(`http://wormhole-api.onrender.com/api/user/liked/${email}`)
-  return movies;
-}
-)
 
-export const removeFromLikedMovies = createAsyncThunk("wormhole/delete",async({email,movieId})=>{
-  const {data:{movies}} = await axios.put(`http://wormhole-api.onrender.com/api/user/delete`,{
-    email,
-    movieId
-  })
-  return movies;
-}
-)
+const usersCollectionRef = collection(firestore, 'users');
+
+export const getUsersLikedMovies = createAsyncThunk(
+  'wormhole/getliked',
+  async (email) => {
+    try {
+      const userDocRef = doc(usersCollectionRef, email);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const user = userDoc.data();
+        return user.likedMovies;
+      } else {
+        throw new Error('User not found');
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error fetching liked movies');
+    }
+  }
+);
+
+export const addToLikedMovies = createAsyncThunk(
+  "wormhole/addToLikedMovies",
+  async ({ email, data }, { rejectWithValue }) => {
+    try {
+      const userDocRef = doc(usersCollectionRef, email);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const user = userDoc.data();
+        const { likedMovies } = user;
+        const movieAlreadyLiked = likedMovies.find(({ id }) => id === data.id);
+
+        if (!movieAlreadyLiked) {
+          const updatedMovies = [...likedMovies, data];
+          await updateDoc(userDocRef, {
+            likedMovies: updatedMovies,
+          });
+          return { message: "Movie successfully added to liked list." };
+        } else {
+          return { message: "Movie already added to the liked list." };
+        }
+      } else {
+        await setDoc(userDocRef, { email, likedMovies: [data] });
+        return { message: "Movie successfully added to liked list." };
+      }
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue("Error adding movie to the liked list");
+    }
+  }
+);
+
+export const removeFromLikedMovies = createAsyncThunk(
+  "wormhole/removeFromLikedMovies",
+  async ({ email, movieId }, { rejectWithValue }) => {
+    try {
+      const userDocRef = doc(usersCollectionRef, email);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        return rejectWithValue("User with given email not found.");
+      }
+
+      const user = userDoc.data();
+      const movies = user.likedMovies;
+      const movieIndex = movies.findIndex(({ id }) => id === movieId);
+
+      if (movieIndex === -1) {
+        return rejectWithValue("Movie not found.");
+      }
+
+      movies.splice(movieIndex, 1);
+      await updateDoc(userDocRef, {
+        likedMovies: movies,
+      });
+
+      return { message: "Movie successfully removed.", movies };
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue("Error removing movie.");
+    }
+  }
+);
 
 export const fetchMovies = createAsyncThunk(
   "wormhole/trending",
@@ -112,9 +186,15 @@ const wormholeSlice = createSlice({
 })
 
 builder.addCase(removeFromLikedMovies.fulfilled,(state,action)=>{
-  state.movies = action.payload;
+  state.movies = action.payload.movies;
+  return state;
   
 })
+
+builder.addCase(addToLikedMovies.fulfilled, (state, action) => {
+  // Handle the successful addition of a movie to the liked list in the state if needed
+});
+
   
   
   },
