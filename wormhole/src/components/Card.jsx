@@ -103,7 +103,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
             </div>
             <div className="genres flex">
               <ul className="flex">
-                {movieData.genres.map((genre) => (
+                {movieData.genres && movieData.genres.map((genre) => (
                   <li>{genre}</li>
                 ))}
               </ul>
