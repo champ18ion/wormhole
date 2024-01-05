@@ -23,4 +23,6 @@ export default function Slider({ movies }) {
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+
+`;

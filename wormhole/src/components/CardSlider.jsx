@@ -51,6 +51,17 @@ export default function CardSlider({ data, title }) {
   );
 };
 const Container = styled.div`
+@media (max-width: 480px) {
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  .slider-action{
+    display: none;
+  }
+  
+}
+
   gap: 1rem;
   position: relative;
   padding: 2rem 0;

@@ -32,6 +32,7 @@ export default function Wormhole() {
 
   useEffect(() => {
     dispatch(getGenres());
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -79,6 +80,19 @@ export default function Wormhole() {
 }
 
 const Container = styled.div`
+@media (max-width: 480px) {
+  .container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: -3rem;
+    margin-top: 5rem;
+    .logo{
+      margin-left: 0;
+    }
+  }
+}
 background-color: black;
 .hero{
   position: relative;
@@ -89,6 +103,7 @@ background-color: black;
   img{
     height: 100vh;
     width: 100vw;
+    object-fit: cover;  
   }
   .container{
     position: absolute;
