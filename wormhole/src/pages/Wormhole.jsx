@@ -90,6 +90,13 @@ const Container = styled.div`
     margin-top: 5rem;
     .logo{
       margin-left: 0;
+      h1{
+        max-width: 90%;
+        -ms-wrap-flow: auto;
+      }
+      p{
+        display: none;
+      }
     }
   }
 }

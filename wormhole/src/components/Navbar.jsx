@@ -157,4 +157,83 @@ const Container = styled.div`
       }
     }
   }
+
+  @media screen and (max-width: 768px) {
+    nav {
+      padding: 0 1rem;
+      height: 5rem;
+     .left {
+        gap: 1rem;
+        margin-top: 1rem;
+       .brand {
+          img {
+            height: 2rem;
+          }
+        }
+       .links {
+          margin-left: 2rem;
+          list-style-type: none;
+          gap: 1rem;
+          li {
+            a {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+     .right {
+        gap: 0.5rem;
+        button {
+          svg {
+            font-size: 1rem;
+          }
+        }
+       .search {
+          input {
+            padding: 0.2rem;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 425px) {
+    nav {
+      padding: 0 1rem;
+      height: 5rem;
+     .left {
+        gap: 1rem;
+        margin-top: 1rem;
+       .brand {
+          img {
+            height: 2rem;
+          }
+        }
+       .links {
+          display: none;
+          margin-left: 2rem;
+          list-style-type: none;
+          gap: 1rem;
+          li {
+            a {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+     .right {
+        gap: 0.5rem;
+        button {
+          svg {
+            font-size: 1rem;
+          }
+        }
+       .search {
+          input {
+            padding: 0.2rem;
+          }
+        }
+      }
+    }
+    
+  }
 `;
